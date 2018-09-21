@@ -37,7 +37,7 @@ module.exports.default = async function(domain) {
         // save result
         fs.writeFileSync(
             `./dist/${tokenizedPath.join('/')}/index.html`,
-            JSON.stringify(res.data)
+            res.data
         )
     }
 }
