@@ -1,0 +1,17 @@
+{
+    "name": "staticpress",
+    "version": "1.0.0",
+    "description": "Proof-of-concept static site generator for Vuepress",
+    "main": "index.js",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1",
+        "generate": "node index"
+    },
+    "keywords": [],
+    "author": "",
+    "license": "ISC",
+    "dependencies": {
+        "axios": "^0.18.0",
+        "rimraf": "^2.6.2"
+    }
+}
