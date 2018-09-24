@@ -2,6 +2,7 @@ const getUrls = require('./wp/getUrls').default
 const axios = require('axios')
 const fs = require('fs')
 const rimraf = require('./utils/rimrafPromise').default
+const ProgressBar = require('progress')
 
 module.exports.default = async function(domain) {
     console.log('Finding all items to fetch...')
@@ -21,9 +22,26 @@ module.exports.default = async function(domain) {
     // remove existing
     await rimraf('./dist/**/*')
 
+    // set up progress bar
+    const bar = new ProgressBar(
+        `   :token1
+    [:bar] (:current / :total)`,
+        {
+            total: urls.length
+        }
+    )
+
     for (let i = 0; i < urls.length; i++) {
         const url = urls[i]
-        const res = await axios.get(url)
+
+        // update CLI
+        process.stdout.clearLine()
+        process.stdout.cursorTo(0)
+        bar.tick({
+            token1: url.replace(domain, '')
+        })
+
+        const res = await axios.get(url + '?contentType=json')
 
         // strip domain name
         const relativePath = url.replace(domain + '/', '')
@@ -41,8 +59,10 @@ module.exports.default = async function(domain) {
         }
         // save result
         fs.writeFileSync(
-            `./dist/${tokenizedPath.join('/')}/index.html`,
-            res.data
+            `./dist/${tokenizedPath.join('/')}/content.json`,
+            JSON.stringify(res.data)
         )
     }
+
+    console.log('Site data built successfully!')
 }

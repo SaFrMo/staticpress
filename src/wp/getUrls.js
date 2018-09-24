@@ -7,6 +7,8 @@ module.exports.default = async function(baseUrl) {
     // try to get list of all posts in all types
     let output = await Promise.all(
         Object.keys(postTypes).map(async postType => {
+            console.log(`Getting posts of type ${postType}...`)
+
             const url = baseUrl + postType + 's'
             const rawPages = await get(url)
 
