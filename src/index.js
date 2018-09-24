@@ -4,11 +4,16 @@ const fs = require('fs')
 const rimraf = require('./utils/rimrafPromise').default
 
 module.exports.default = async function(domain) {
-    // API fetching
-    const apiUrl = domain + '/wp-json/wp/v2/'
+    console.log('Finding all items to fetch...')
 
+    // base API URL
+    const apiUrl = domain + '/wp-json/wp/v2/'
+    // get all URLs to fetch
     const urls = await getUrls(apiUrl)
 
+    console.log(`Found ${urls.length} URL(s). Starting...`)
+
+    // create output if necessary
     if (!fs.existsSync('./dist')) {
         fs.mkdirSync('./dist')
     }
